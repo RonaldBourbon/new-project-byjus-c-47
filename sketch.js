@@ -41,7 +41,7 @@ function setup(){
   createCanvas(400,400)
 //imagem de plano de fundo
 bg = createSprite(165,485,1,1);
-getBackgroundImg();
+bg.addImage(bgImg2)
 
 
 //criando canto superior e inferior
@@ -83,12 +83,12 @@ function draw() {
 
     //fazendo o balão de ar quente pular
     if(keyDown("space")) {
-      balloon.velocityY = -6 ;
+      balloon.velocityY = -6;
       jumpSound.play();
     }
 
     //adicionando gravidade
-     balloon.velocityY = balloon.velocityY + 2;
+     balloon.velocityY = balloon.velocityY + 0.5;
 
      
     Bar();
@@ -98,8 +98,7 @@ function draw() {
      spawnObstaclesBottom();
 
 //condição para o estado END
-if(topObstaclesGroup.isTouching(balloon) || balloon.isTouching(topGround)
-|| balloon.isTouching(bottomGround) || bottomObstaclesGroup.isTouching(balloon)){
+if(topObstaclesGroup.isTouching(balloon)|| bottomObstaclesGroup.isTouching(balloon)){
 
 gameState = END;
 dieSound.play();
@@ -151,7 +150,7 @@ dieSound.play();
           }
 
     } 
-
+    background(bgImg2)
     drawSprites();
     Score();     
 }
@@ -264,30 +263,7 @@ function Score()
         textFont("algerian");
         textSize(30);
         fill("yellow");
-        text("Pontuação: "+ score, 250, 50);
+        text("Pontuação: "+ score, 200, 50);
        
   
-}
-
-//usando chamadas de API para definir a imagem de plano de fundo de acordo com o tempo
-async function getBackgroundImg(){
-  var response = await fetch("http://worldtimeapi.org/api/timezone/Asia/Kolkata");
-  var responseJSON = await response.json();
-
-  var datetime = responseJSON.datetime;
-  var hour = datetime.slice(11,13);
-  
-  if(hour>=06 && hour<=19){
-    
-    bg.addImage(bgImg);
-    bg.scale = 1.3
-  }
-  else{
-    
-    bg.addImage(bgImg2);
-    bg.scale = 1.5
-    bg.x=200
-    bg.y=200
-  }
-
 }
